@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Promoção Especial - Gabinono Decorações</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f3f0;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            text-align: center;
+            padding: 30px 0;
+            background-color: #e8c5b5;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .header h1 {
+            color: #5d4037;
+            margin: 0;
+            font-size: 2.5rem;
+        }
+        .header p {
+            color: #7d5d53;
+            font-size: 1.2rem;
+            margin: 10px 0 0;
+        }
+        .promo-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+        .promo-card::before {
+            content: "";
+            position: absolute;
+            top: -20px;
+            right: -20px;
+            width: 120px;
+            height: 120px;
+            background-color: #f8bbd0;
+            border-radius: 50%;
+            opacity: 0.3;
+            z-index: 0;
+        }
+        .customer-info {
+            margin-bottom: 25px;
+            position: relative;
+            z-index: 1;
+        }
+        .customer-info h2 {
+            color: #5d4037;
+            margin-top: 0;
+            font-size: 1.8rem;
+        }
+        .customer-info p {
+            margin: 5px 0;
+            font-size: 1.1rem;
+            color: #7d5d53;
+        }
+        .discount-info {
+            background-color: #f8bbd0;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+            margin-bottom: 25px;
+            position: relative;
+            z-index: 1;
+        }
+        .discount-info h2 {
+            color: #ad1457;
+            margin-top: 0;
+            font-size: 2.2rem;
+        }
+        .discount-info p {
+            margin: 5px 0;
+            font-size: 1.2rem;
+            color: #880e4f;
+        }
+        .discount-code {
+            font-size: 2rem;
+            font-weight: bold;
+            letter-spacing: 2px;
+            color: #ad1457;
+            padding: 10px;
+            background-color: #fce4ec;
+            border-radius: 5px;
+            display: inline-block;
+            margin: 10px 0;
+        }
+        .instructions {
+            margin-bottom: 25px;
+            position: relative;
+            z-index: 1;
+        }
+        .instructions h3 {
+            color: #5d4037;
+            margin-top: 0;
+        }
+        .instructions ol {
+            padding-left: 20px;
+        }
+        .instructions li {
+            margin-bottom: 10px;
+            color: #7d5d53;
+        }
+        .cta-button {
+            display: block;
+            background-color: #ad1457;
+            color: white;
+            text-decoration: none;
+            text-align: center;
+            padding: 15px 20px;
+            border-radius: 8px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            transition: background-color 0.3s;
+            margin: 20px auto;
+            max-width: 300px;
+            position: relative;
+            z-index: 1;
+        }
+        .cta-button:hover {
+            background-color: #880e4f;
+        }
+        .footer {
+            text-align: center;
+            padding: 20px 0;
+            color: #7d5d53;
+            font-size: 0.9rem;
+        }
+        .logo {
+            max-width: 200px;
+            margin: 0 auto 20px;
+            display: block;
+        }
+        @media (max-width: 600px) {
+            .header h1 {
+                font-size: 2rem;
+            }
+            .discount-code {
+                font-size: 1.5rem;
+            }
+            .container {
+                padding: 10px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Gabinono Decorações</h1>
+            <p>Promoção Exclusiva para Você!</p>
+        </div>
+        
+        <div class="promo-card">
+            <div class="customer-info">
+                <h2>Olá, <span id="customerName">Cliente Especial</span>!</h2>
+                <p>Email: <span id="customerEmail">email@exemplo.com</span></p>
+                <p>Data: <span id="currentDate">01/01/2023</span></p>
+            </div>
+            
+            <div class="discount-info">
+                <h2>Seu Desconto Exclusivo</h2>
+                <p>Você ganhou um desconto especial em sua próxima compra:</p>
+                <div class="discount-code" id="discountCode">PROMO20</div>
+                <p>Válido até <span id="validUntil">31/12/2023</span></p>
+            </div>
+            
+            <div class="instructions">
+                <h3>Como usar seu desconto:</h3>
+                <ol>
+                    <li>Escolha os produtos que deseja comprar em nossa loja</li>
+                    <li>Adicione o código de desconto no carrinho</li>
+                    <li>Finalize sua compra com o desconto aplicado</li>
+                </ol>
+            </div>
+            
+            <a href="https://www.instagram.com/gabinonodecoracoes/" class="cta-button">Visitar Nossa Loja</a>
+        </div>
+        
+        <div class="footer">
+            <p>© 2023 Gabinono Decorações. Todos os direitos reservados.</p>
+            <p>Email: gabinonodecoracoes08@gmail.com</p>
+        </div>
+    </div>
+
+    <script>
+        // Função para obter parâmetros da URL
+        function getUrlParameter(name) {
+            name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+            var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+            var results = regex.exec(location.search);
+            return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+        }
+
+        // Função para formatar a data
+        function formatDate(date) {
+            const day = date.getDate().toString().padStart(2, '0');
+            const month = (date.getMonth() + 1).toString().padStart(2, '0');
+            const year = date.getFullYear();
+            return `${day}/${month}/${year}`;
+        }
+
+        // Função para adicionar meses à data
+        function addMonths(date, months) {
+            const newDate = new Date(date);
+            newDate.setMonth(newDate.getMonth() + months);
+            return newDate;
+        }
+
+        // Obter dados da URL
+        const name = getUrlParameter('nome') || 'Cliente Especial';
+        const email = getUrlParameter('email') || 'email@exemplo.com';
+        const discount = getUrlParameter('desconto') || '20%';
+        const code = getUrlParameter('codigo') || 'PROMO20';
+
+        // Atualizar os elementos da página com os dados
+        document.getElementById('customerName').textContent = name;
+        document.getElementById('customerEmail').textContent = email;
+        document.getElementById('discountCode').textContent = code;
+
+        // Definir datas
+        const today = new Date();
+        const validUntil = addMonths(today, 1);
+        
+        document.getElementById('currentDate').textContent = formatDate(today);
+        document.getElementById('validUntil').textContent = formatDate(validUntil);
+    </script>
+    <script src="scripts.js"></script>
+</body>
+</html>

@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Roleta de Descontos - Gabinono Decorações</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+            flex-direction: column;
+            overflow-x: hidden; /* Para os confetes não causarem scroll horizontal */
+        }
+        
+        .container {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 500px;
+            padding: 25px;
+            text-align: center;
+        }
+        
+        .header {
+            margin-bottom: 20px;
+        }
+        
+        .header h1 {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 8px;
+        }
+        
+        .header p {
+            font-size: 16px;
+            color: #666;
+            line-height: 1.4;
+        }
+        
+        .user-info {
+            background-color: #f9f3f0;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        
+        .user-info p {
+            margin: 5px 0;
+            font-size: 14px;
+            color: #555;
+        }
+        
+        .user-info strong {
+            color: #333;
+        }
+        
+        .wheel-container {
+            position: relative;
+            width: 300px;
+            height: 300px;
+            margin: 0 auto 30px;
+        }
+        
+        .wheel {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            position: relative;
+            overflow: hidden;
+            border: 5px solid #e8c5b5;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            transition: transform 5s cubic-bezier(0.17, 0.67, 0.12, 0.99);
+        }
+        
+        .wheel-section {
+            position: absolute;
+            width: 50%;
+            height: 50%;
+            transform-origin: bottom right;
+            clip-path: polygon(0 0, 100% 0, 100% 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            color: white;
+            font-size: 20px;
+        }
+        
+        .section-0 { background-color: #e57373; transform: rotate(0deg); }
+        .section-1 { background-color: #81c784; transform: rotate(51.43deg); }
+        .section-2 { background-color: #64b5f6; transform: rotate(102.86deg); }
+        .section-3 { background-color: #ffb74d; transform: rotate(154.29deg); }
+        .section-4 { background-color: #ba68c8; transform: rotate(205.72deg); }
+        .section-5 { background-color: #4db6ac; transform: rotate(257.15deg); }
+        .section-6 { background-color: #ff8a65; transform: rotate(308.58deg); }
+        
+        .section-text {
+            position: absolute;
+            transform: rotate(25deg) translateX(20px) translateY(-80px);
+            width: 60px;
+            text-align: center;
+        }
+        
+        .wheel-pointer {
+            position: absolute;
+            top: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 30px;
+            height: 40px;
+            background-color: #ad1457;
+            clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+            z-index: 10;
+        }
+        
+        .spin-button {
+            background-color: #ad1457;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            margin-top: 20px;
+        }
+        
+        .spin-button:hover {
+            background-color: #880e4f;
+        }
+        
+        .spin-button:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+        
+        .result-container {
+            margin-top: 20px;
+            display: none;
+        }
+        
+        .result-box {
+            background-color: #f8bbd0;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 15px;
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(173, 20, 87, 0.4); }
+            70% { box-shadow: 0 0 0 15px rgba(173, 20, 87, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(173, 20, 87, 0); }
+        }
+        
+        .result-box h2 {
+            color: #ad1457;
+            margin-bottom: 10px;
+            font-size: 28px;
+            text-transform: uppercase;
+        }
+        
+        .result-box p {
+            font-size: 16px;
+            color: #333;
+        }
+        
+        .discount-value {
+            font-size: 48px;
+            font-weight: bold;
+            color: #ad1457;
+            margin: 15px 0;
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+            animation: scale 1s infinite alternate;
+        }
+        
+        @keyframes scale {
+            0% { transform: scale(1); }
+            100% { transform: scale(1.1); }
+        }
+        
+        .email-status {
+            margin-top: 15px;
+            font-size: 14px;
+            color: #4caf50;
+        }
+        
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background-color: #f48fb1;
+            animation: confetti 5s ease-in-out infinite;
+            z-index: 1000;
+            border-radius: 0% 0% 50% 50%;
+        }
+        
+        @keyframes confetti {
+            0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+            75% { opacity: 1; }
+            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+        }
+        
+        .footer {
+            margin-top: 30px;
+            text-align: center;
+            font-size: 14px;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Roleta de Descontos</h1>
+            <p>Gire a roleta e ganhe um desconto exclusivo!</p>
+        </div>
+        
+        <div class="user-info" id="userInfo">
+            <p><strong>Nome:</strong> <span id="userName">Carregando...</span></p>
+            <p><strong>Email:</strong> <span id="userEmail">Carregando...</span></p>
+            <p><strong>WhatsApp:</strong> <span id="userWhatsapp">Carregando...</span></p>
+            <p><strong>Tema:</strong> <span id="userTheme">Carregando...</span></p>
+            <p><strong>Data da Festa:</strong> <span id="userDate">Carregando...</span></p>
+        </div>
+        
+        <div class="wheel-container">
+            <div class="wheel-pointer"></div>
+            <div class="wheel" id="wheel">
+                <div class="wheel-section section-0">
+                    <div class="section-text">0%</div>
+                </div>
+                <div class="wheel-section section-1">
+                    <div class="section-text">5%</div>
+                </div>
+                <div class="wheel-section section-2">
+                    <div class="section-text">10%</div>
+                </div>
+                <div class="wheel-section section-3">
+                    <div class="section-text">15%</div>
+                </div>
+                <div class="wheel-section section-4">
+                    <div class="section-text">20%</div>
+                </div>
+                <div class="wheel-section section-5">
+                    <div class="section-text">25%</div>
+                </div>
+                <div class="wheel-section section-6">
+                    <div class="section-text">30%</div>
+                </div>
+            </div>
+        </div>
+        
+        <button class="spin-button" id="spinButton">GIRAR A ROLETA</button>
+        
+        <div class="result-container" id="resultContainer">
+            <div class="result-box">
+                <h2>PARABÉNS!</h2>
+                <p>Você ganhou um desconto de:</p>
+                <div class="discount-value" id="discountResult">20%</div>
+                <p>Um email com seu cupom foi enviado para o seu email cadastrado.</p>
+                <div class="email-status" id="emailStatus">Enviando emails...</div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>© 2023 Gabinono Decorações. Todos os direitos reservados.</p>
+            <p>Email: gabinonodecoracoes08@gmail.com</p>
+        </div>
+    </div>
+    
+    <script>
+        // Função para obter parâmetros da URL
+        function getUrlParameter(name) {
+            name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+            var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+            var results = regex.exec(location.search);
+            return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+        }
+        
+        // Obter dados do usuário da URL ou do localStorage
+        const userData = {
+            nome: getUrlParameter('nome') || localStorage.getItem('userName') || 'Visitante',
+            email: getUrlParameter('email') || localStorage.getItem('userEmail') || 'email@exemplo.com',
+            whatsapp: getUrlParameter('whatsapp') || localStorage.getItem('userWhatsapp') || '(XX) XXXXX-XXXX',
+            tema: getUrlParameter('tema') || localStorage.getItem('userTheme') || 'Não informado',
+            data: getUrlParameter('data') || localStorage.getItem('userDate') || 'Não informada'
+        };
+        
+        // Salvar dados no localStorage para uso futuro
+        localStorage.setItem('userName', userData.nome);
+        localStorage.setItem('userEmail', userData.email);
+        localStorage.setItem('userWhatsapp', userData.whatsapp);
+        localStorage.setItem('userTheme', userData.tema);
+        localStorage.setItem('userDate', userData.data);
+        
+        // Preencher informações do usuário na página
+        document.getElementById('userName').textContent = userData.nome;
+        document.getElementById('userEmail').textContent = userData.email;
+        document.getElementById('userWhatsapp').textContent = userData.whatsapp;
+        document.getElementById('userTheme').textContent = userData.tema;
+        document.getElementById('userDate').textContent = userData.data;
+        
+        // Configuração da roleta
+        const wheel = document.getElementById('wheel');
+        const spinButton = document.getElementById('spinButton');
+        const resultContainer = document.getElementById('resultContainer');
+        const discountResult = document.getElementById('discountResult');
+        const emailStatus = document.getElementById('emailStatus');
+        
+        // Array com os valores de desconto
+        const discounts = ['0%', '5%', '10%', '15%', '20%', '25%', '30%'];
+        
+        // Função para girar a roleta
+        spinButton.addEventListener('click', function() {
+            // Desabilitar o botão durante o giro
+            spinButton.disabled = true;
+            
+            // Gerar um número aleatório para determinar o resultado
+            // Aqui você pode ajustar as probabilidades se desejar
+            const randomIndex = Math.floor(Math.random() * discounts.length);
+            const selectedDiscount = discounts[randomIndex];
+            
+            // Calcular o ângulo de rotação
+            // Cada seção tem 51.43 graus (360 / 7)
+            // Adicionamos rotações extras (10 * 360) para dar mais voltas
+            // E um valor aleatório pequeno para variar o ponto de parada
+            const sectionAngle = 51.43;
+            const extraRotation = 10 * 360; // 10 voltas completas
+            const randomOffset = Math.random() * 20 - 10; // Variação de -10 a +10 graus
+            
+            // O ângulo final é calculado para parar no setor escolhido
+            // 360 - para inverter a direção (a roleta gira no sentido horário)
+            // randomIndex * sectionAngle - para selecionar o setor correto
+            // sectionAngle / 2 - para apontar para o meio do setor
+            const finalAngle = extraRotation + (360 - (randomIndex * sectionAngle + sectionAngle / 2)) + randomOffset;
+            
+            // Aplicar a rotação à roleta
+            wheel.style.transform = `rotate(${finalAngle}deg)`;
+            
+            // Após a animação terminar (5 segundos), mostrar o resultado
+            setTimeout(function() {
+                // Atualizar o resultado
+                discountResult.textContent = selectedDiscount;
+                
+                // Mostrar o container de resultado
+                resultContainer.style.display = 'block';
+                
+                // Enviar emails
+                sendEmails(selectedDiscount);
+                
+                // Reativar o botão após 1 segundo
+                setTimeout(function() {
+                    spinButton.disabled = false;
+                }, 1000);
+            }, 5000);
+        });
+        
+        // Função para criar confetes na tela
+        function createConfetti() {
+            const confettiCount = 100;
+            const colors = ['#f48fb1', '#ce93d8', '#90caf9', '#80deea', '#a5d6a7', '#fff59d', '#ffcc80'];
+            
+            for (let i = 0; i < confettiCount; i++) {
+                const confetti = document.createElement('div');
+                confetti.className = 'confetti';
+                confetti.style.left = Math.random() * 100 + 'vw';
+                confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                confetti.style.width = Math.random() * 10 + 5 + 'px';
+                confetti.style.height = Math.random() * 10 + 5 + 'px';
+                confetti.style.animationDuration = Math.random() * 3 + 2 + 's';
+                confetti.style.animationDelay = Math.random() * 5 + 's';
+                document.body.appendChild(confetti);
+                
+                // Remover confete após a animação
+                setTimeout(() => {
+                    confetti.remove();
+                }, 7000);
+            }
+        }
+
+        // Função para enviar emails automaticamente
+        function sendEmails(discount) {
+            // Mostrar mensagem de parabéns
+            resultContainer.style.display = 'block';
+            discountResult.textContent = discount;
+            emailStatus.textContent = 'Enviando emails automaticamente...';
+            
+            // Criar efeito de confete
+            createConfetti();
+            
+            // Enviar email para o cliente usando EmailJS ou outro serviço
+            sendEmailAutomatically(discount);
+        }
+        
+        // Função para enviar email automaticamente
+        function sendEmailAutomatically(discount) {
+            // Preparar dados para o cliente
+            const emailCliente = {
+                to_email: userData.email,
+                to_name: userData.nome,
+                subject: `Parabéns! Você ganhou ${discount} de desconto na Gabinono Decorações`,
+                message: `Olá ${userData.nome},
+
+Parabéns! Você acabou de ganhar ${discount} de desconto na Gabinono Decorações.
+
+Seu código promocional é: GABINONO${discount.replace('%', '')}
+
+Para utilizar seu desconto, basta apresentar este email ou informar o código promocional no momento da compra.
+
+Tema escolhido: ${userData.tema}
+Data da festa: ${userData.data}
+
+Agradecemos sua participação!
+
+Atenciosamente,
+Equipe Gabinono Decorações
+gabinonodecoracoes08@gmail.com`
+            };
+            
+            // Preparar dados para a empresa
+            const emailEmpresa = {
+                to_email: 'gabinonodecoracoes08@gmail.com',
+                to_name: 'Gabinono Decorações',
+                subject: `Novo cliente ganhou ${discount} de desconto na roleta`,
+                message: `Novo cliente participou da roleta de descontos!
+
+Dados do cliente:
+Nome: ${userData.nome}
+Email: ${userData.email}
+WhatsApp: ${userData.whatsapp}
+Tema escolhido: ${userData.tema}
+Data da festa: ${userData.data}
+
+Desconto ganho: ${discount}
+Código promocional: GABINONO${discount.replace('%', '')}
+
+Data/Hora: ${new Date().toLocaleString('pt-BR')}`
+            };
+            
+            // Simular envio automático (em um ambiente real, você usaria um serviço como EmailJS, SendGrid, etc.)
+            simulateEmailSending(emailCliente, emailEmpresa);
+        }
+        
+        // Função para simular o envio de email (em produção, substituir por um serviço real)
+        function simulateEmailSending(emailCliente, emailEmpresa) {
+            // Simular tempo de envio
+            setTimeout(() => {
+                emailStatus.textContent = 'Email enviado para você! Enviando para a empresa...';
+                
+                setTimeout(() => {
+                    emailStatus.textContent = 'Emails enviados com sucesso!';
+                    
+                    // Como estamos em um ambiente de desenvolvimento, vamos mostrar os links mailto como fallback
+                    // Em produção, isso seria substituído por um serviço de email real
+                    const mailtoCliente = `mailto:${userData.email}?subject=${encodeURIComponent(emailCliente.subject)}&body=${encodeURIComponent(emailCliente.message)}`;
+                    const mailtoEmpresa = `mailto:gabinonodecoracoes08@gmail.com?subject=${encodeURIComponent(emailEmpresa.subject)}&body=${encodeURIComponent(emailEmpresa.message)}`;
+                    
+                    console.log('Email para cliente:', mailtoCliente);
+                    console.log('Email para empresa:', mailtoEmpresa);
+                    
+                    // Abrir os emails como fallback (remover em produção com serviço real)
+                    setTimeout(() => {
+                        window.open(mailtoCliente, '_blank');
+                        setTimeout(() => {
+                            window.open(mailtoEmpresa, '_blank');
+                        }, 1000);
+                    }, 1000);
+                }, 1500);
+            }, 1500);
+        }
+    </script>
+    <script src="scripts.js"></script>
+</body>
+</html>

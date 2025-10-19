@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulário - Gabinono Decorações</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .form-container {
+            background-color: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 400px;
+            padding: 25px;
+        }
+        
+        .form-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .form-header h1 {
+            font-size: 24px;
+            color: #333;
+            margin-bottom: 8px;
+        }
+        
+        .form-header p {
+            font-size: 14px;
+            color: #666;
+            line-height: 1.4;
+        }
+        
+        .form-group {
+            margin-bottom: 16px;
+        }
+        
+        label {
+            display: block;
+            font-size: 14px;
+            color: #555;
+            margin-bottom: 6px;
+        }
+        
+        input, select {
+            width: 100%;
+            padding: 10px 12px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            font-size: 14px;
+            color: #333;
+        }
+        
+        input::placeholder {
+            color: #aaa;
+        }
+        
+        button {
+            width: 100%;
+            padding: 14px;
+            background-color: #4285f4;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 500;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-top: 10px;
+            transition: background-color 0.2s;
+        }
+        
+        button:hover {
+            background-color: #3367d6;
+        }
+        
+        .success-message {
+            display: none;
+            text-align: center;
+            color: #4caf50;
+            margin-top: 20px;
+            font-weight: 500;
+        }
+        
+        .error-message {
+            display: none;
+            text-align: center;
+            color: #f44336;
+            margin-top: 20px;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+    <div class="form-container">
+        <div class="form-header">
+            <h1>Preencha para Girar!</h1>
+            <p>Complete seus dados para ter a chance de ganhar um desconto incrível.</p>
+        </div>
+        
+        <form id="discountForm">
+            <div class="form-group">
+                <label for="nome">Nome Completo</label>
+                <input type="text" id="nome" name="nome" placeholder="Seu nome aqui" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="whatsapp">WhatsApp</label>
+                <input type="tel" id="whatsapp" name="whatsapp" placeholder="(XX) XXXXX-XXXX" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="tema">Tema do Catálogo</label>
+                <input type="text" id="tema" name="tema" placeholder="Ex: Safari, Princesas, etc." required>
+            </div>
+            
+            <div class="form-group">
+                <label for="data">Data da Festa</label>
+                <select id="data" name="data" required>
+                    <option value="" disabled selected>Selecione uma data</option>
+                    <option value="1 mês">Daqui a 1 mês</option>
+                    <option value="2 meses">Daqui a 2 meses</option>
+                    <option value="3 meses">Daqui a 3 meses</option>
+                    <option value="4 meses">Daqui a 4 meses</option>
+                    <option value="5 meses">Daqui a 5 meses</option>
+                    <option value="6 meses">Daqui a 6 meses</option>
+                    <option value="Mais de 6 meses">Mais de 6 meses</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="email">Seu Melhor E-mail</label>
+                <input type="email" id="email" name="email" placeholder="voce@exemplo.com" required>
+            </div>
+            
+            <button type="submit">Confirmar e ir para a roleta</button>
+        </form>
+        
+        <div id="successMessage" class="success-message">
+            Dados enviados com sucesso! Redirecionando para a roleta...
+        </div>
+        
+        <div id="errorMessage" class="error-message">
+            Ocorreu um erro ao enviar os dados. Por favor, tente novamente.
+        </div>
+    </div>
+    
+    <script>
+        document.getElementById('discountForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Obter os valores do formulário
+            const nome = document.getElementById('nome').value;
+            const whatsapp = document.getElementById('whatsapp').value;
+            const tema = document.getElementById('tema').value;
+            const data = document.getElementById('data').value;
+            const email = document.getElementById('email').value;
+            
+            // Formatar os dados para envio
+            const formData = {
+                nome: nome,
+                whatsapp: whatsapp,
+                tema: tema,
+                data_festa: data,
+                email: email,
+                timestamp: new Date().toISOString()
+            };
+            
+            // Enviar os dados por email
+            enviarPorEmail(formData);
+        });
+        
+        function enviarPorEmail(dados) {
+            // Formatar o corpo do email
+            const assunto = encodeURIComponent('Novo cadastro para promoção - ' + dados.nome);
+            const corpo = encodeURIComponent(
+                `Novo cadastro para promoção:\n\n` +
+                `Nome: ${dados.nome}\n` +
+                `WhatsApp: ${dados.whatsapp}\n` +
+                `Tema do Catálogo: ${dados.tema}\n` +
+                `Data da Festa: ${dados.data_festa}\n` +
+                `Email: ${dados.email}\n` +
+                `Data/Hora do cadastro: ${new Date().toLocaleString('pt-BR')}`
+            );
+            
+            // Email de destino (seu email)
+            const emailDestino = 'gabinonodecoracoes08@gmail.com';
+            
+            // Criar o link mailto
+            const mailtoLink = `mailto:${emailDestino}?subject=${assunto}&body=${corpo}`;
+            
+            // Abrir o cliente de email do usuário
+            window.location.href = mailtoLink;
+            
+            // Mostrar mensagem de sucesso
+            document.getElementById('successMessage').style.display = 'block';
+            
+            // Redirecionar para a página da roleta após 3 segundos
+            setTimeout(function() {
+                window.location.href = 'roleta.html?nome=' + encodeURIComponent(dados.nome) + 
+                                      '&email=' + encodeURIComponent(dados.email) + 
+                                      '&whatsapp=' + encodeURIComponent(dados.whatsapp) + 
+                                      '&tema=' + encodeURIComponent(dados.tema) + 
+                                      '&data=' + encodeURIComponent(dados.data_festa);
+            }, 3000);
+        }
+        
+        // Máscara para o campo de WhatsApp
+        document.getElementById('whatsapp').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            
+            if (value.length > 0) {
+                value = '(' + value;
+            }
+            if (value.length > 3) {
+                value = value.substring(0, 3) + ') ' + value.substring(3);
+            }
+            if (value.length > 10) {
+                value = value.substring(0, 10) + '-' + value.substring(10);
+            }
+            if (value.length > 15) {
+                value = value.substring(0, 15);
+            }
+            
+            e.target.value = value;
+        });
+    </script>
+    <script src="scripts.js"></script>
+</body>
+</html>

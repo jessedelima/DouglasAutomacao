@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gabinono Decorações - Página Inicial</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .menu-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 80vh;
+            padding: 20px;
+        }
+        
+        .logo {
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        
+        .logo h1 {
+            color: var(--primary-color);
+            font-size: 36px;
+            margin-bottom: 10px;
+        }
+        
+        .logo p {
+            color: #666;
+            font-size: 18px;
+        }
+        
+        .menu-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            width: 100%;
+            max-width: 400px;
+        }
+        
+        .menu-btn {
+            display: block;
+            padding: 15px 20px;
+            background-color: var(--white-color);
+            color: var(--primary-color);
+            text-decoration: none;
+            border-radius: 10px;
+            text-align: center;
+            font-weight: 600;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+            border: 2px solid var(--primary-color);
+        }
+        
+        .menu-btn:hover {
+            background-color: var(--primary-color);
+            color: var(--white-color);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .menu-btn-primary {
+            background-color: var(--primary-color);
+            color: var(--white-color);
+        }
+        
+        .menu-btn-primary:hover {
+            background-color: #ff5252;
+            border-color: #ff5252;
+        }
+        
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: #666;
+            font-size: 14px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="menu-container">
+            <div class="logo">
+                <h1>Gabinono Decorações</h1>
+                <p>Sistema de Promoções e Descontos</p>
+            </div>
+            
+            <div class="menu-buttons">
+                <a href="formulario.html" class="menu-btn menu-btn-primary">Formulário de Cadastro</a>
+                <a href="roleta.html" class="menu-btn">Roleta de Descontos</a>
+                <a href="promocao.html" class="menu-btn">Página de Promoção</a>
+                <a href="gerador.html" class="menu-btn">Gerador de Links</a>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>&copy; 2023 Gabinono Decorações. Todos os direitos reservados.</p>
+        </div>
+    </div>
+    
+    <script src="scripts.js"></script>
+    <script>
+        // Adicionar animação de entrada para os botões
+        document.addEventListener('DOMContentLoaded', function() {
+            const buttons = document.querySelectorAll('.menu-btn');
+            buttons.forEach((button, index) => {
+                button.style.opacity = '0';
+                button.style.transform = 'translateY(20px)';
+                
+                setTimeout(() => {
+                    button.style.transition = 'all 0.5s ease';
+                    button.style.opacity = '1';
+                    button.style.transform = 'translateY(0)';
+                }, 100 + (index * 100));
+            });
+        });
+    </script>
+</body>
+</html>

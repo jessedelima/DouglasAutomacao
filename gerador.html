@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerador de Links Promocionais - Gabinono Decorações</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f9f3f0;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .header {
+            text-align: center;
+            padding: 20px 0;
+            background-color: #e8c5b5;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .header h1 {
+            color: #5d4037;
+            margin: 0;
+            font-size: 2rem;
+        }
+        .form-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #5d4037;
+        }
+        input, select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+            box-sizing: border-box;
+        }
+        button {
+            background-color: #ad1457;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #880e4f;
+        }
+        .result-section {
+            margin-top: 30px;
+            display: none;
+        }
+        .result-box {
+            background-color: #f5f5f5;
+            padding: 15px;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            margin-bottom: 15px;
+        }
+        .copy-btn {
+            background-color: #5d4037;
+            margin-right: 10px;
+        }
+        .copy-btn:hover {
+            background-color: #3e2723;
+        }
+        .email-btn {
+            background-color: #4caf50;
+        }
+        .email-btn:hover {
+            background-color: #388e3c;
+        }
+        .footer {
+            text-align: center;
+            padding: 20px 0;
+            color: #7d5d53;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Gerador de Links Promocionais - Gabinono Decorações</h1>
+        </div>
+        
+        <div class="form-card">
+            <div class="form-group">
+                <label for="customerName">Nome do Cliente:</label>
+                <input type="text" id="customerName" placeholder="Ex: Maria Silva">
+            </div>
+            
+            <div class="form-group">
+                <label for="customerEmail">Email do Cliente:</label>
+                <input type="email" id="customerEmail" placeholder="Ex: cliente@email.com">
+            </div>
+            
+            <div class="form-group">
+                <label for="discountValue">Valor do Desconto:</label>
+                <select id="discountValue">
+                    <option value="10%">10%</option>
+                    <option value="15%">15%</option>
+                    <option value="20%" selected>20%</option>
+                    <option value="25%">25%</option>
+                    <option value="30%">30%</option>
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="discountCode">Código Promocional:</label>
+                <input type="text" id="discountCode" placeholder="Ex: PROMO20" value="PROMO20">
+            </div>
+            
+            <button onclick="generateLink()">Gerar Link Promocional</button>
+        </div>
+        
+        <div id="resultSection" class="result-section">
+            <h2>Link Gerado:</h2>
+            <div class="result-box">
+                <p id="generatedLink"></p>
+            </div>
+            
+            <div>
+                <button class="copy-btn" onclick="copyToClipboard()">Copiar Link</button>
+                <button class="email-btn" onclick="sendEmail()">Enviar por Email</button>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>© 2023 Gabinono Decorações. Todos os direitos reservados.</p>
+            <p>Email: gabinonodecoracoes08@gmail.com</p>
+        </div>
+    </div>
+
+    <script>
+        function generateLink() {
+            const name = encodeURIComponent(document.getElementById('customerName').value);
+            const email = encodeURIComponent(document.getElementById('customerEmail').value);
+            const discount = encodeURIComponent(document.getElementById('discountValue').value);
+            const code = encodeURIComponent(document.getElementById('discountCode').value);
+            
+            // Obter a URL base (sem parâmetros)
+            const baseUrl = window.location.href.split('/').slice(0, -1).join('/') + '/promocao.html';
+            
+            // Construir a URL com os parâmetros
+            const fullUrl = `${baseUrl}?nome=${name}&email=${email}&desconto=${discount}&codigo=${code}`;
+            
+            // Exibir o resultado
+            document.getElementById('generatedLink').textContent = fullUrl;
+            document.getElementById('resultSection').style.display = 'block';
+        }
+        
+        function copyToClipboard() {
+            const linkText = document.getElementById('generatedLink').textContent;
+            navigator.clipboard.writeText(linkText).then(() => {
+                alert('Link copiado para a área de transferência!');
+            }).catch(err => {
+                console.error('Erro ao copiar: ', err);
+                // Fallback para navegadores mais antigos
+                const textArea = document.createElement('textarea');
+                textArea.value = linkText;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                alert('Link copiado para a área de transferência!');
+            });
+        }
+        
+        function sendEmail() {
+            const name = document.getElementById('customerName').value;
+            const email = document.getElementById('customerEmail').value;
+            const link = document.getElementById('generatedLink').textContent;
+            const discount = document.getElementById('discountValue').value;
+            
+            const subject = encodeURIComponent(`Promoção Exclusiva: ${discount} de desconto para você!`);
+            const body = encodeURIComponent(`Olá ${name},\n\nTemos uma promoção exclusiva para você!\n\nClique no link abaixo para acessar seu cupom de desconto de ${discount}:\n\n${link}\n\nAtenciosamente,\nEquipe Gabinono Decorações`);
+            
+            window.location.href = `mailto:${email}?subject=${subject}&body=${body}`;
+        }
+    </script>
+    <script src="scripts.js"></script>
+</body>
+</html>
